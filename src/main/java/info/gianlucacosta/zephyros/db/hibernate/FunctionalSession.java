@@ -2,7 +2,7 @@
   ===========================================================================
   Zephyros - Hibernate
   ===========================================================================
-  Copyright (C) 2017 Gianluca Costa
+  Copyright (C) 2017-2018 Gianluca Costa
   ===========================================================================
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Provides useful methods for dealing with sessions and transactions via
@@ -147,6 +148,40 @@ public class FunctionalSession {
 
             return query.getResultList();
         });
+    }
+
+
+
+    /**
+     * Runs a named query and returns its result set as a closeable stream
+     *
+     * @param queryName         The query name
+     * @param resultElementType The type of the result element
+     * @param <T>               The type of the result element
+     * @return The stream containing the query's result set. It must be closed by the client
+     * in order to close the underlying session object
+     */
+    public <T> Stream<T> runNamedStreamQuery(String queryName, Class<T> resultElementType) {
+        Session session =
+                sessionFactory.openSession();
+
+        try {
+            Stream<T> result =
+                    session
+                            .createNamedQuery(
+                                    queryName,
+                                    resultElementType
+                            )
+                            .stream();
+
+            result.onClose(session::close);
+
+            return result;
+        } catch (Exception ex) {
+            session.close();
+
+            throw ex;
+        }
     }
 
 

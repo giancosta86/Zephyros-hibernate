@@ -2,7 +2,7 @@
   ===========================================================================
   Zephyros - Hibernate
   ===========================================================================
-  Copyright (C) 2017 Gianluca Costa
+  Copyright (C) 2017-2018 Gianluca Costa
   ===========================================================================
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ apply plugin: 'info.gianlucacosta.aurora'
 
 group 'info.gianlucacosta.zephyros'
 archivesBaseName = 'zephyros-hibernate'
-version '1.0'
+version '1.1'
 
 description = 'Java utilities for Hibernate'
 
@@ -59,7 +59,7 @@ repositories {
 
 
 dependencies {
-    compile 'org.hibernate:hibernate-entitymanager:5.2.10.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.2.12.Final'
 
     compile 'info.gianlucacosta.zephyros:zephyros-core:1.0'
 }
